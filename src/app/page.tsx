@@ -1,15 +1,22 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import ShopLayout from "./(shop)/layout";
-import { categories, sampleProducts } from "@/data/mock-data";
+import { getCategories } from "@/services/category.service";
+import { getProducts } from "@/services/product.service";
 import { formatPrice } from "@/lib/utils";
+import { AddToCartButton } from "@/components/product/AddToCartButton";
+
 
 export const metadata: Metadata = {
   title: "E-Commerce Store - Home",
   description: "Modern e-commerce platform built with Next.js 16 and TypeScript.",
 };
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(),
+  ]);
   return (
     <ShopLayout>
       {/* Hero Section */}
@@ -94,31 +101,32 @@ export default function HomePage() {
           </div>
 
           <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {sampleProducts.map((product) => (
+            {products.map((product) => (
               <div
                 key={product.id}
                 className="group rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition hover:shadow-md"
               >
-                <div className="flex h-44 w-full items-center justify-center rounded-lg bg-slate-100 text-slate-400">
-                  <span className="text-sm font-medium">Product Image Placeholder</span>
-                </div>
-                <div className="mt-4">
-                  <h3 className="text-base font-semibold text-slate-900 group-hover:text-slate-700">
-                    {product.name}
-                  </h3>
+                <Link href={`/products/${product.slug}`} className="block">
+                  <div className="flex h-44 w-full items-center justify-center rounded-lg bg-slate-100 text-slate-400 group-hover:bg-slate-200/70 transition-colors">
+                    <span className="text-sm font-medium">Book Cover Placeholder</span>
+                  </div>
+                  <div className="mt-4">
+                    <h3 className="text-base font-semibold text-slate-900 group-hover:text-slate-700 transition-colors">
+                      {product.name}
+                    </h3>
+                  </div>
+                </Link>
+                <div>
                   <p className="mt-1 text-sm text-slate-500 line-clamp-2">
                     {product.description}
                   </p>
-                  <div className="mt-4 flex items-center justify-between">
+                  <div className="mt-4 flex items-center justify-between gap-2">
                     <span className="text-lg font-bold text-slate-900">
                       {formatPrice(product.price)}
                     </span>
-                    <Link
-                      href="/cart"
-                      className="rounded-md bg-slate-900 px-3 py-1.5 text-xs font-medium text-white hover:bg-slate-800 transition-colors"
-                    >
-                      Add to Cart
-                    </Link>
+                    <div>
+                      <AddToCartButton product={product} size="sm" />
+                    </div>
                   </div>
                 </div>
               </div>

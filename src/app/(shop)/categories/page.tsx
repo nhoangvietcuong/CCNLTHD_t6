@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { categories } from "@/data/mock-data";
+import { getCategories } from "@/services/category.service";
+
 
 export const metadata: Metadata = {
   title: "Categories - E-Commerce Store",
   description: "Browse product categories and discover curated collections.",
 };
 
-export default function CategoriesPage() {
+export default async function CategoriesPage() {
+  const categories = await getCategories();
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Header section */}
