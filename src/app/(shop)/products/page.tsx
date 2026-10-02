@@ -3,6 +3,8 @@ import Link from "next/link";
 import { categories, sampleProducts } from "@/data/mock-data";
 import { formatPrice } from "@/lib/utils";
 
+import Image from "next/image";
+
 export const metadata: Metadata = {
   title: "All Products - E-Commerce Store",
   description: "Browse our comprehensive collection of quality products.",
@@ -37,16 +39,27 @@ export default function ProductsPage() {
       </div>
 
       {/* Products placeholder grid */}
+      
       <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {sampleProducts.map((product) => (
           <div
             key={product.id}
             className="group rounded-xl border border-slate-200 bg-white p-5 shadow-xs transition hover:shadow-md"
-          >
-            <div className="flex h-48 w-full items-center justify-center rounded-lg bg-slate-100 text-slate-400">
+           /*  Sửa từ hình ảnh div sang chèn ảnh từ Image component của Next.js, dưới đây là code cũ */
+           /*{ <div className="flex h-48 w-full items-center justify-center rounded-lg bg-slate-100 text-slate-400">
               <span className="text-sm font-medium">Product Image Placeholder</span>
+            </div> }*/
+           > {/* Đoạn code MỚI: */}
+            <div className="relative h-48 w-full overflow-hidden rounded-lg bg-slate-100">
+              <Image
+                src="/placeholder.png"
+                alt={product.name}
+                fill
+                className="object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+              />
             </div>
-            <div className="mt-4">
+              <div className="mt-4">
               <h3 className="text-base font-semibold text-slate-900 group-hover:text-slate-700">
                 {product.name}
               </h3>

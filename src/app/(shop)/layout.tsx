@@ -15,3 +15,10 @@ export default function ShopLayout({
     </div>
   );
 }
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Modern E-Commerce Platform",
+  description: "Nền tảng thương mại điện tử hiện đại",
+};
+

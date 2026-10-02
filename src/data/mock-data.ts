@@ -34,12 +34,12 @@ export const categories: Category[] = [
 export const sampleProducts: Product[] = [
   {
     id: "prod-1",
-    name: "Minimalist Essential Item A",
-    slug: "minimalist-essential-a",
-    description: "Engineered with premium materials for maximum durability and timeless style.",
+    name: "Aranyaka Book",
+    slug: "aranyaka-book",
+    description: "Adventure with Aranara!",
     price: 89.0,
     compareAtPrice: 110.0,
-    images: ["/placeholder.svg"],
+    images: ["/placeholder.png"],
     categoryId: "cat-1",
     tags: ["popular", "essential"],
     inStock: true,
