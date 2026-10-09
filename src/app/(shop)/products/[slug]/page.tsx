@@ -14,12 +14,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { slug } = await params;
   const product = sampleProducts.find((item) => item.slug === slug);
 
+
   if (!product) {
     return {
       title: "Sản phẩm không tồn tại",
       description: "Không tìm thấy thông tin sản phẩm.",
     };
   }
+  
 
   return {
     title: `${product.name} - E-Commerce Store`,
@@ -31,6 +33,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     },
   };
 }
+ 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
   
@@ -48,13 +51,16 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <h2 className="mt-2 text-sm text-slate-500">
         {product.description} 
       </h2>
-
       <Link 
         href="/products" 
         className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
       >
         ← Quay lại danh sách
       </Link>
+
+
+
+
 
       <div className="mt-8 grid grid-cols-1 gap-10 md:grid-cols-2">
         {/* Khối hiển thị ảnh sản phẩm bằng next/image */}
@@ -122,3 +128,5 @@ export default async function ProductDetailPage({ params }: PageProps) {
     </Link>
   </div>
 </div> */
+
+
