@@ -5,6 +5,7 @@ import {
   doc,
   runTransaction,
   serverTimestamp,
+  DocumentReference,
 } from "firebase/firestore";
 import { OrderItem } from "@/types";
 
@@ -44,7 +45,7 @@ export async function POST(request: NextRequest) {
     const result = await runTransaction(db, async (transaction) => {
       let calculatedTotalAmount = 0;
       const orderItemsSnapshot: OrderItem[] = [];
-      const productsToUpdate: { ref: any; newStock: number }[] = [];
+      const productsToUpdate: { ref: DocumentReference; newStock: number }[] = [];
 
       // A. ĐỌC DỮ LIỆU & KIỂM TRA TỒN KHO TRÊN FIRESTORE
       for (const item of items) {
@@ -126,11 +127,15 @@ export async function POST(request: NextRequest) {
       },
       { status: 201 }
     );
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("Lỗi khi xử lý đặt hàng:", error);
+    const message =
+      error instanceof Error
+        ? error.message
+        : "Đã xảy ra lỗi trong quá trình tạo đơn hàng.";
     return NextResponse.json(
       {
-        message: error.message || "Đã xảy ra lỗi trong quá trình tạo đơn hàng.",
+        message,
       },
       { status: 400 }
     );

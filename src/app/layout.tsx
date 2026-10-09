@@ -15,11 +15,11 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    template: "%s | Commerce Store",
-    default: "Commerce Store - Modern Shopping Platform",
+    template: "%s | nextBooks.vn",
+    default: "nextBooks.vn - Nhà Sách Trực Tuyến Hàng Đầu",
   },
   description:
-    "A high-performance modern e-commerce storefront built with Next.js 16 and TypeScript.",
+    "Nhà sách trực tuyến nextBooks.vn - Tuyển chọn sách hay, giá tốt, bọc sách và giao hàng toàn quốc.",
 };
 
 export default function RootLayout({

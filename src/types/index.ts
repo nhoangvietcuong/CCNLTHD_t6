@@ -5,6 +5,8 @@ export interface Category {
   slug: string;
   description?: string; // Tùy chọn để tương thích UI hiện tại
   itemCount?: number;   // Tùy chọn để tương thích UI hiện tại
+  subcategories?: string[];
+  icon?: string;
 }
 
 // 2. Product Schema: products/{productId}
@@ -17,6 +19,16 @@ export interface Product {
   categoryId: string;
   description: string;
   stock: number;
+  author?: string;
+  originalPrice?: number;
+  discount?: number;
+  rating?: number;
+  reviewCount?: number;
+  isHot?: boolean;
+  isNew?: boolean;
+  isFeatured?: boolean;
+  isUpcoming?: boolean;
+  badge?: string;
 }
 
 // 3. Cart Item (Lưu ở client / localStorage)

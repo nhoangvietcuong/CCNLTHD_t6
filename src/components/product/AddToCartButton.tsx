@@ -88,7 +88,7 @@ export function AddToCartButton({
             ? "bg-slate-300 text-slate-500 cursor-not-allowed"
             : added
             ? "bg-emerald-600 text-white"
-            : "bg-slate-900 text-white hover:bg-slate-800 shadow-sm"
+            : "bg-[#c92127] text-white hover:bg-[#a81a1f] shadow-xs"
         }`}
       >
         {isOutOfStock ? "Tạm hết hàng" : added ? "✓ Đã thêm vào giỏ!" : "Thêm vào giỏ hàng"}

@@ -1,2 +1,2 @@
-// Placeholder for future product-specific components (e.g. ProductCard, ProductGrid, ProductFilter)
-export {};
+export * from "./AddToCartButton";
+export * from "./ProductCard";

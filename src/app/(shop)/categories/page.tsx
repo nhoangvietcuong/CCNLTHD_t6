@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getCategories } from "@/services/category.service";
-
+import { getProducts } from "@/services/product.service";
 
 export const metadata: Metadata = {
   title: "Categories - E-Commerce Store",
@@ -9,7 +9,17 @@ export const metadata: Metadata = {
 };
 
 export default async function CategoriesPage() {
-  const categories = await getCategories();
+  const [categories, products] = await Promise.all([
+    getCategories(),
+    getProducts(),
+  ]);
+
+  const categoryProductCounts = products.reduce((acc, p) => {
+    if (p.categoryId) {
+      acc[p.categoryId] = (acc[p.categoryId] || 0) + 1;
+    }
+    return acc;
+  }, {} as Record<string, number>);
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Header section */}
@@ -27,8 +37,8 @@ export default async function CategoriesPage() {
         {categories.map((category) => (
           <Link
             key={category.id}
-            href="/products"
-            className="group rounded-xl border border-slate-200 bg-white p-6 shadow-xs transition hover:border-slate-300 hover:shadow-md"
+            href={`/products?category=${category.slug || category.id}`}
+            className="group rounded-xl border border-gray-200 bg-white p-5 shadow-xs transition hover:border-[#c92127] hover:shadow-md"
           >
             <div className="flex h-32 items-center justify-center rounded-lg bg-slate-100 text-slate-400 group-hover:bg-slate-200/70 transition-colors">
               <svg
@@ -53,7 +63,7 @@ export default async function CategoriesPage() {
                   {category.name}
                 </h3>
                 <span className="text-xs font-medium text-slate-400">
-                  {category.itemCount} items
+                  {category.itemCount ?? categoryProductCounts[category.id] ?? 0} items
                 </span>
               </div>
               <p className="mt-1 text-sm text-slate-500">
