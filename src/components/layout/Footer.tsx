@@ -2,165 +2,323 @@ import React from "react";
 import Link from "next/link";
 
 export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
-  const navigationLinks = [
-    { label: "Home", href: "/" },
-    { label: "All Products", href: "/products" },
-    { label: "Categories", href: "/categories" },
-    { label: "About Us", href: "/about" },
-  ];
-
-  const customerServiceLinks = [
-    { label: "Help & Support", href: "/about" },
-    { label: "Shipping & Delivery", href: "/about" },
-    { label: "Returns & Exchanges", href: "/about" },
-    { label: "Privacy Policy", href: "/about" },
-    { label: "Terms of Service", href: "/about" },
-  ];
-
   return (
-    <footer className="border-t border-slate-200 bg-slate-50 text-slate-600 transition-colors">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {/* Store Information */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-xl font-bold tracking-tight text-slate-900">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-900 text-white">
+    <footer className="mt-12 w-full bg-white text-gray-700">
+      {/* KEY SELLING POINTS (4 Lợi thế nổi bật của Netabooks) */}
+      <section className="border-t border-b border-gray-200 bg-gray-50/70 py-6">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {/* Điểm 1 */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-red-100 text-[#c92127]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
+                  className="h-6 w-6"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
                 >
-                  <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
-                  <path d="M3 6h18" />
-                  <path d="M16 10a4 4 0 0 1-8 0" />
+                  <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+                  <path d="M6 6h10" />
+                  <path d="M6 10h10" />
                 </svg>
               </div>
-              <span>COMMERCE</span>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                  Hơn 33.000 tựa sách hay
+                </p>
+                <p className="text-xs text-gray-500">
+                  Tuyển chọn bởi nextBooks.vn
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-slate-500 leading-relaxed">
-              A modern, high-performance e-commerce platform built with Next.js 16,
-              TypeScript, and Tailwind CSS. Providing clean and seamless shopping experiences.
-            </p>
-            <div className="text-xs text-slate-500">
-              <p>Email: support@ecommerce-example.com</p>
-              <p>Hotline: 1800-0000 (Mon - Sat, 8:00 - 20:00)</p>
-            </div>
-          </div>
 
-          {/* Quick Navigation */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-900">
-              Navigation
-            </h3>
-            <ul className="mt-4 space-y-2.5">
-              {navigationLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Customer Service */}
-          <div>
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-900">
-              Customer Service
-            </h3>
-            <ul className="mt-4 space-y-2.5">
-              {customerServiceLinks.map((link) => (
-                <li key={link.label}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-slate-600 hover:text-slate-900 transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Social Links & Newsletter */}
-          <div className="space-y-4">
-            <h3 className="text-sm font-semibold uppercase tracking-wider text-slate-900">
-              Follow Us
-            </h3>
-            <p className="text-sm text-slate-500">
-              Stay connected with our latest updates and community offers.
-            </p>
-            <div className="flex space-x-3">
-              {/* Twitter / X */}
-              <a
-                href="#twitter"
-                aria-label="Twitter"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-              </a>
-              {/* Facebook */}
-              <a
-                href="#facebook"
-                aria-label="Facebook"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M9.198 21.5h4v-8.01h3.604l.396-3.98h-4V7.5a1 1 0 0 1 1-1h3v-4h-3a5 5 0 0 0-5 5v2.01h-2v3.98h2v8.01z" />
-                </svg>
-              </a>
-              {/* Instagram */}
-              <a
-                href="#instagram"
-                aria-label="Instagram"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
-              >
+            {/* Điểm 2 */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-[#1b8a3e]">
                 <svg
-                  className="h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
                   fill="none"
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth="2"
-                  viewBox="0 0 24 24"
                 >
-                  <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                  <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                  <rect width="16" height="13" x="2" y="4" rx="2" />
+                  <path d="m22 7-7.1 4.7a2 2 0 0 1-2.2 0L5.6 7" />
                 </svg>
-              </a>
-              {/* GitHub */}
-              <a
-                href="#github"
-                aria-label="GitHub"
-                className="flex h-9 w-9 items-center justify-center rounded-full bg-white border border-slate-200 text-slate-600 hover:text-slate-900 hover:border-slate-300 transition-colors"
-              >
-                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                  />
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                  Miễn phí giao hàng
+                </p>
+                <p className="text-xs text-gray-500">
+                  Từ 150k ở HCM và 300k trên TOÀN QUỐC
+                </p>
+              </div>
+            </div>
+
+            {/* Điểm 3 */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-amber-100 text-amber-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M20 12v10H4V12" />
+                  <path d="M2 7h20v5H2z" />
+                  <path d="M12 22V7" />
+                  <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z" />
+                  <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z" />
                 </svg>
-              </a>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                  Quà tặng miễn phí
+                </p>
+                <p className="text-xs text-gray-500">
+                  Bao sách miễn phí
+                </p>
+              </div>
+            </div>
+
+            {/* Điểm 4 */}
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-blue-100 text-blue-700">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                >
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
+                  <path d="M21 3v5h-5" />
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
+                  <path d="M8 16H3v5" />
+                </svg>
+              </div>
+              <div>
+                <p className="text-xs font-bold uppercase tracking-wider text-gray-900">
+                  Đổi trả nhanh chóng
+                </p>
+                <p className="text-xs text-gray-500">
+                  Hàng bị lỗi được đổi trả nhanh chóng
+                </p>
+              </div>
             </div>
           </div>
         </div>
+      </section>
 
-        {/* Bottom copyright */}
-        <div className="mt-12 border-t border-slate-200 pt-8 text-center text-xs text-slate-500 sm:flex sm:justify-between sm:text-left">
-          <p>&copy; {currentYear} Commerce Store. All rights reserved.</p>
-          <p className="mt-2 sm:mt-0">Built with Next.js 16, TypeScript &amp; Tailwind CSS.</p>
+      {/* FOOTER MAIN (4 Cột chuẩn Netabooks) */}
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {/* Cột 1: Thông tin liên hệ */}
+          <div className="space-y-3">
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+              Nhà sách nextBooks Online
+            </h3>
+            <p className="text-xs text-gray-500">
+              (Hoạt động từ 8h - 17h, thứ 2 - thứ 7)
+            </p>
+            <div className="space-y-2 pt-1 text-xs">
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-[#c92127]">
+                  📞
+                </span>
+                <span>
+                  Gọi đặt hàng:{" "}
+                  <a
+                    href="tel:02873007684"
+                    className="font-bold text-gray-900 hover:text-[#c92127]"
+                  >
+                    028 7300 7684
+                  </a>
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-[#c92127]">
+                  ✉️
+                </span>
+                <span>
+                  Email:{" "}
+                  <a
+                    href="mailto:cskh@nextbooks.vn"
+                    className="font-bold text-gray-900 hover:text-[#c92127]"
+                  >
+                    cskh@nextbooks.vn
+                  </a>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          {/* Cột 2: Hỗ trợ khách hàng */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+              Hỗ trợ khách hàng
+            </h3>
+            <ul className="mt-3 space-y-2 text-xs">
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Hướng dẫn đặt hàng
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Phương thức thanh toán
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Phương thức vận chuyển
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Chính sách đổi trả
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Chính sách bảo mật
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Điều khoản sử dụng
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Dịch vụ giao sách đi nước ngoài
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Cột 3: Về NetaBooks & Sản phẩm khác */}
+          <div>
+            <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+              Về nextBooks
+            </h3>
+            <ul className="mt-3 space-y-2 text-xs">
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Giới thiệu nextBooks
+                </Link>
+              </li>
+              <li>
+                <Link href="/about" className="text-gray-600 hover:text-[#c92127]">
+                  Tuyển dụng
+                </Link>
+              </li>
+            </ul>
+
+            <h3 className="mt-6 text-sm font-bold uppercase tracking-wider text-gray-900">
+              Sản phẩm khác
+            </h3>
+            <ul className="mt-3 space-y-2 text-xs">
+              <li>
+                <a href="#tin-sach" className="text-gray-600 hover:text-[#c92127]">
+                  Tin Sách
+                </a>
+              </li>
+              <li>
+                <Link href="/categories" className="text-gray-600 hover:text-[#c92127]">
+                  Tủ sách
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Cột 4: Kết nối & Gian hàng */}
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+                Kết nối với nextBooks
+              </h3>
+              <ul className="mt-3 space-y-2 text-xs">
+                <li>
+                  <a
+                    href="https://www.facebook.com/NetaBooks/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-[#c92127]"
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-[10px]">
+                      f
+                    </span>
+                    <span>6.072 theo dõi trang</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://www.instagram.com/netabooks.vn/"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-[#c92127]"
+                  >
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-pink-600 text-white font-bold text-[10px]">
+                      📷
+                    </span>
+                    <span>355 theo dõi trang</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+
+            <div className="pt-2">
+              <h3 className="text-sm font-bold uppercase tracking-wider text-gray-900">
+                Gian hàng của nextBooks
+              </h3>
+              <ul className="mt-3 space-y-2 text-xs">
+                <li>
+                  <a
+                    href="https://tiki.vn/cua-hang/nha-sach-netabooks"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-blue-600"
+                  >
+                    <span className="flex h-5 w-5 items-center justify-center rounded bg-blue-500 text-[10px] text-white font-bold">
+                      T
+                    </span>
+                    <span>Trên Tiki</span>
+                  </a>
+                </li>
+                <li>
+                  <a
+                    href="https://shopee.vn/netabooks"
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-2 text-gray-600 hover:text-orange-600"
+                  >
+                    <span className="flex h-5 w-5 items-center justify-center rounded bg-orange-500 text-[10px] text-white font-bold">
+                      S
+                    </span>
+                    <span>Trên Shopee</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* FOOTER BOTTOM LINE (Bản quyền & Giấy phép) */}
+      <div className="border-t border-gray-200 bg-gray-100/70 py-4 text-center text-xs text-gray-500">
+        <div className="mx-auto max-w-7xl px-4 space-y-1">
+          <p>© 2019 - Bản quyền của Công ty TNHH nextBooks Việt Nam – www.nextbooks.vn</p>
+          <p className="text-[11px] text-gray-400">
+            Giấy chứng nhận Đăng ký Kinh doanh số 0315442805 do Sở Kế hoạch và Đầu tư Thành phố Hồ Chí Minh cấp ngày 19/12/2018
+          </p>
         </div>
       </div>
     </footer>

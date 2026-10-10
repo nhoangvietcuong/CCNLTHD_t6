@@ -16,6 +16,7 @@ export async function getCategories(): Promise<Category[]> {
       slug: data.slug ?? "",
       description: data.description,
       itemCount: data.itemCount,
+      subcategories: data.subcategories || [],
     };
   });
 }

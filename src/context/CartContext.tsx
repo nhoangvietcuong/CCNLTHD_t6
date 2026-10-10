@@ -22,17 +22,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isMounted, setIsMounted] = useState(false);
 
-  // 1. Chỉ đọc localStorage sau khi component đã mount trên browser (tránh Hydration mismatch của Next.js)
+  // 1. Đọc localStorage sau khi component đã mount trên browser (tránh Hydration mismatch của Next.js)
   useEffect(() => {
-    setIsMounted(true);
-    try {
-      const savedCart = localStorage.getItem(CART_STORAGE_KEY);
-      if (savedCart) {
-        setItems(JSON.parse(savedCart));
+    const timer = setTimeout(() => {
+      try {
+        const savedCart = localStorage.getItem(CART_STORAGE_KEY);
+        if (savedCart) {
+          setItems(JSON.parse(savedCart));
+        }
+      } catch (error) {
+        console.error("Lỗi khi đọc giỏ hàng từ localStorage:", error);
       }
-    } catch (error) {
-      console.error("Lỗi khi đọc giỏ hàng từ localStorage:", error);
-    }
+      setIsMounted(true);
+    }, 0);
+    return () => clearTimeout(timer);
   }, []);
 
   // 2. Tự động lưu vào localStorage mỗi khi giỏ hàng thay đổi
