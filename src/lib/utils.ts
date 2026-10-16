@@ -10,11 +10,18 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
  */
 export function formatPrice(
   amount: number,
-  currency: string = "USD",
-  locale: string = "en-US"
+  currency?: string,
+  locale: string = "vi-VN"
 ): string {
+  const num = typeof amount === "number" ? amount : Number(amount) || 0;
+  if (currency) {
+    return new Intl.NumberFormat(locale, {
+      style: "currency",
+      currency,
+      maximumFractionDigits: 0,
+    }).format(num);
+  }
   return new Intl.NumberFormat(locale, {
-    style: "currency",
-    currency,
-  }).format(amount);
+    maximumFractionDigits: 0,
+  }).format(num);
 }
