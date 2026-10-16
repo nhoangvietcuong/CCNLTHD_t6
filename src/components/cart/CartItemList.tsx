@@ -2,13 +2,16 @@
 
 import React from "react";
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { formatPrice } from "@/lib/utils";
 
 export function CartItemList() {
-  const { items, updateQuantity, removeFromCart, isMounted } = useCart();
+  const items = useHydratedStore(useCartStore, (s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeFromCart = useCartStore((s) => s.removeFromCart);
 
-  if (!isMounted) {
+  if (!items) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs animate-pulse">
         <div className="h-6 w-32 bg-slate-200 rounded mb-4" />

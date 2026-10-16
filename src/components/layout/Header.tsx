@@ -3,7 +3,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
 
 const CATEGORIES_LIST = [
   {
@@ -134,7 +135,7 @@ const CATEGORIES_LIST = [
 
 export default function Header() {
   const router = useRouter();
-  const { totalItems, isMounted } = useCart();
+  const totalItems = useHydratedStore(useCartStore, (s) => s.getTotalItems()) ?? 0;
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -339,7 +340,7 @@ export default function Header() {
                   <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12" />
                 </svg>
                 <span className="absolute -top-1 -right-1 flex h-4.5 min-w-4.5 items-center justify-center rounded-full bg-[#c92127] px-1 text-[10px] font-bold text-white shadow-xs">
-                  {isMounted ? totalItems : 0}
+                  {totalItems}
                 </span>
               </div>
               <span className="hidden sm:inline-block">GIỎ HÀNG</span>

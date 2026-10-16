@@ -4,7 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 
 interface ProductCardProps {
   product: Product;
@@ -12,7 +12,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product, className = "" }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
   const [added, setAdded] = React.useState(false);
   const [imgError, setImgError] = React.useState(false);
 
@@ -27,7 +27,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
     e.stopPropagation();
     if (product.stock <= 0 && product.badge) return;
 
-    addToCart(product, 1);
+    addToCart(product, 100);
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
   };
