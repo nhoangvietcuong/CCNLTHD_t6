@@ -2,13 +2,138 @@
 
 import React from "react";
 import Link from "next/link";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { formatPrice } from "@/lib/utils";
+import { CartItem } from "@/types";
+
+function CartItemRow({
+  item,
+  updateQuantity,
+  removeFromCart,
+}: {
+  item: CartItem;
+  updateQuantity: (productId: string, quantity: number) => void;
+  removeFromCart: (productId: string) => void;
+}) {
+  const [imgError, setImgError] = React.useState(false);
+  const imageUrl = item.product?.imageUrl;
+  const hasImage =
+    Boolean(imageUrl) && !imgError && imageUrl !== "/placeholder.svg";
+  const productUrl = item.product?.slug
+    ? `/products/${item.product.slug}`
+    : undefined;
+
+  return (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4">
+      {/* Ảnh và thông tin sách */}
+      <div className="flex items-center gap-4">
+        {productUrl ? (
+          <Link
+            href={productUrl}
+            className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white p-1 transition hover:border-slate-300 hover:shadow-xs"
+          >
+            {hasImage ? (
+              <img
+                src={imageUrl}
+                alt={item.product?.name ?? "Bìa sách"}
+                loading="lazy"
+                onError={() => setImgError(true)}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-slate-400">
+                <span className="text-xl">📖</span>
+                <span className="text-[9px] text-slate-400 font-medium">Bìa sách</span>
+              </div>
+            )}
+          </Link>
+        ) : (
+          <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-slate-200 bg-white p-1">
+            {hasImage ? (
+              <img
+                src={imageUrl}
+                alt={item.product?.name ?? "Bìa sách"}
+                loading="lazy"
+                onError={() => setImgError(true)}
+                className="h-full w-full object-contain"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center text-slate-400">
+                <span className="text-xl">📖</span>
+                <span className="text-[9px] text-slate-400 font-medium">Bìa sách</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        <div>
+          <h3 className="text-sm font-semibold text-slate-900 line-clamp-2">
+            {productUrl ? (
+              <Link
+                href={productUrl}
+                className="hover:text-[#c92127] transition-colors"
+              >
+                {item.product?.name ?? "Sách trong giỏ"}
+              </Link>
+            ) : (
+              item.product?.name ?? "Sách trong giỏ"
+            )}
+          </h3>
+          <p className="text-xs text-slate-500 mt-0.5">
+            Đơn giá: {formatPrice(item.unitPrice)}
+          </p>
+          <button
+            type="button"
+            onClick={() => removeFromCart(item.productId)}
+            className="mt-1 text-xs text-rose-600 hover:text-rose-800 transition-colors cursor-pointer"
+          >
+            Xóa khỏi giỏ
+          </button>
+        </div>
+      </div>
+
+      {/* Bộ tăng giảm số lượng & Thành tiền */}
+      <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
+        <div className="flex items-center rounded-lg border border-slate-200">
+          <button
+            type="button"
+            onClick={() => updateQuantity(item.productId, item.quantity - 1)}
+            className="px-2.5 py-1 text-slate-500 hover:text-slate-800 text-sm cursor-pointer"
+            aria-label="Giảm"
+          >
+            -
+          </button>
+          <span className="px-2 text-sm font-medium text-slate-800 min-w-6 text-center">
+            {item.quantity}
+          </span>
+          <button
+            type="button"
+            onClick={() => updateQuantity(item.productId, item.quantity + 1)}
+            disabled={
+              item.product?.stock ? item.quantity >= item.product.stock : false
+            }
+            className="px-2.5 py-1 text-slate-500 hover:text-slate-800 text-sm disabled:opacity-40 cursor-pointer"
+            aria-label="Tăng"
+          >
+            +
+          </button>
+        </div>
+
+        <span className="text-base font-bold text-slate-900 min-w-24 text-right">
+          {formatPrice(item.unitPrice * item.quantity)}
+        </span>
+      </div>
+    </div>
+  );
+}
 
 export function CartItemList() {
-  const { items, updateQuantity, removeFromCart, isMounted } = useCart();
+  const items = useHydratedStore(useCartStore, (s) => s.items);
+  const updateQuantity = useCartStore((s) => s.updateQuantity);
+  const removeFromCart = useCartStore((s) => s.removeFromCart);
 
-  if (!isMounted) {
+  if (!items) {
     return (
       <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs animate-pulse">
         <div className="h-6 w-32 bg-slate-200 rounded mb-4" />
@@ -34,7 +159,9 @@ export function CartItemList() {
             d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
           />
         </svg>
-        <h2 className="text-lg font-semibold text-slate-900">Giỏ hàng của bạn đang trống</h2>
+        <h2 className="text-lg font-semibold text-slate-900">
+          Giỏ hàng của bạn đang trống
+        </h2>
         <p className="mt-2 text-sm text-slate-500">
           Hãy dạo quanh hiệu sách và chọn cho mình những cuốn sách yêu thích nhé!
         </p>
@@ -58,62 +185,12 @@ export function CartItemList() {
 
       <div className="mt-6 divide-y divide-slate-100">
         {items.map((item) => (
-          <div
+          <CartItemRow
             key={item.productId}
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-4"
-          >
-            {/* Ảnh và thông tin sách */}
-            <div className="flex items-center gap-4">
-              <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-xs text-slate-400">
-                Bìa sách
-              </div>
-              <div>
-                <h3 className="text-sm font-semibold text-slate-900">
-                  {item.product?.name ?? "Sách trong giỏ"}
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Đơn giá: {formatPrice(item.unitPrice)}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => removeFromCart(item.productId)}
-                  className="mt-1 text-xs text-rose-600 hover:text-rose-800 transition-colors cursor-pointer"
-                >
-                  Xóa khỏi giỏ
-                </button>
-              </div>
-            </div>
-
-            {/* Bộ tăng giảm số lượng & Thành tiền */}
-            <div className="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto">
-              <div className="flex items-center rounded-lg border border-slate-200">
-                <button
-                  type="button"
-                  onClick={() => updateQuantity(item.productId, item.quantity - 1)}
-                  className="px-2.5 py-1 text-slate-500 hover:text-slate-800 text-sm cursor-pointer"
-                  aria-label="Giảm"
-                >
-                  -
-                </button>
-                <span className="px-2 text-sm font-medium text-slate-800 min-w-6 text-center">
-                  {item.quantity}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => updateQuantity(item.productId, item.quantity + 1)}
-                  disabled={item.product?.stock ? item.quantity >= item.product.stock : false}
-                  className="px-2.5 py-1 text-slate-500 hover:text-slate-800 text-sm disabled:opacity-40 cursor-pointer"
-                  aria-label="Tăng"
-                >
-                  +
-                </button>
-              </div>
-
-              <span className="text-base font-bold text-slate-900 min-w-24 text-right">
-                {formatPrice(item.unitPrice * item.quantity)}
-              </span>
-            </div>
-          </div>
+            item={item}
+            updateQuantity={updateQuantity}
+            removeFromCart={removeFromCart}
+          />
         ))}
       </div>
 
@@ -128,3 +205,4 @@ export function CartItemList() {
     </div>
   );
 }
+

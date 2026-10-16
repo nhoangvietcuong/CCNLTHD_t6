@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
+import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { formatPrice } from "@/lib/utils";
 
 interface CheckoutFormProps {
@@ -9,7 +10,8 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
-  const { items, subtotal, isMounted } = useCart();
+  const items = useHydratedStore(useCartStore, (s) => s.items);
+  const subtotal = useHydratedStore(useCartStore, (s) => s.getSubtotal()) ?? 0;
 
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
@@ -18,7 +20,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
 
-  if (!isMounted || items.length === 0) {
+  if (!items || items.length === 0) {
     return null;
   }
 

@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Product } from "@/types";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 
 interface AddToCartButtonProps {
   product: Product;
@@ -17,7 +17,7 @@ export function AddToCartButton({
   className = "",
   size = "md",
 }: AddToCartButtonProps) {
-  const { addToCart } = useCart();
+  const addToCart = useCartStore((state) => state.addToCart);
   const [quantity, setQuantity] = useState(1);
   const [added, setAdded] = useState(false);
 

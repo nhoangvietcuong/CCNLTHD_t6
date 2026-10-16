@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { CartItemList } from "@/components/cart/CartItemList";
 import { CheckoutForm } from "@/components/cart/CheckoutForm";
-import { useCart } from "@/context/CartContext";
+import { useCartStore } from "@/store/useCartStore";
 
 export default function CartPage() {
-  const { clearCart } = useCart();
+  const clearCart = useCartStore((state) => state.clearCart);
   const [placedOrderId, setPlacedOrderId] = useState<string | null>(null);
 
   const handleOrderSuccess = (orderId: string) => {
