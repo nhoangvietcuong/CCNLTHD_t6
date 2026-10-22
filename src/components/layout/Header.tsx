@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
+import AccountMenu from "@/components/auth/AccountMenu";
 
 const CATEGORIES_LIST = [
   {
@@ -140,7 +141,7 @@ export default function Header() {
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategoryIndex, setActiveCategoryIndex] = useState<number | null>(null);
-  const [loginModalOpen, setLoginModalOpen] = useState(false);
+  //const [loginModalOpen, setLoginModalOpen] = useState(false);
 
   const categoryDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -262,62 +263,8 @@ export default function Header() {
               </div>
             </a>
 
-            {/* Account Login */}
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setLoginModalOpen(!loginModalOpen)}
-                className="flex items-center gap-2 text-xs font-medium text-gray-700 hover:text-[#c92127] transition cursor-pointer"
-              >
-                <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gray-100 text-gray-600 hover:bg-gray-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    className="h-5 w-5"
-                  >
-                    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
-                </div>
-                <span className="hidden sm:inline-block">Đăng nhập</span>
-              </button>
-
-              {/* Login dropdown preview */}
-              {loginModalOpen && (
-                <div className="absolute right-0 top-12 z-50 w-64 rounded-lg border border-gray-200 bg-white p-4 shadow-xl animate-in fade-in slide-in-from-top-2">
-                  <h4 className="text-sm font-bold text-gray-900 mb-2">
-                    Tài khoản nextBooks
-                  </h4>
-                  <p className="text-xs text-gray-500 mb-4">
-                    Đăng nhập để theo dõi đơn hàng và hưởng ưu đãi tích lũy.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      alert("Tính năng đăng nhập thành viên đang được kết nối.");
-                      setLoginModalOpen(false);
-                    }}
-                    className="w-full rounded bg-[#c92127] py-2 text-xs font-semibold text-white hover:bg-[#a81a1f] transition cursor-pointer mb-2"
-                  >
-                    Đăng nhập / Đăng ký
-                  </button>
-                  <div className="text-center">
-                    <Link
-                      href="/about"
-                      onClick={() => setLoginModalOpen(false)}
-                      className="text-[11px] text-gray-500 hover:underline"
-                    >
-                      Quên mật khẩu?
-                    </Link>
-                  </div>
-                </div>
-              )}
-            </div>
+            {/* Tài khoản đăng nhập / đăng ký */}
+            <AccountMenu />
 
             {/* Shopping Cart Button */}
             <Link
@@ -425,9 +372,8 @@ export default function Header() {
               <span>TẤT CẢ DANH MỤC</span>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                className={`h-3.5 w-3.5 transition-transform duration-200 ${
-                  categoryMenuOpen ? "rotate-180" : ""
-                }`}
+                className={`h-3.5 w-3.5 transition-transform duration-200 ${categoryMenuOpen ? "rotate-180" : ""
+                  }`}
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -450,11 +396,10 @@ export default function Header() {
                     <div
                       key={cat.slug}
                       onMouseEnter={() => setActiveCategoryIndex(idx)}
-                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-medium cursor-pointer transition ${
-                        activeCategoryIndex === idx
+                      className={`flex items-center justify-between px-3.5 py-2 text-xs font-medium cursor-pointer transition ${activeCategoryIndex === idx
                           ? "bg-red-50 text-[#c92127] font-semibold"
                           : "text-gray-700 hover:bg-gray-50 hover:text-[#c92127]"
-                      }`}
+                        }`}
                     >
                       <Link
                         href={`/products?category=${cat.slug}`}

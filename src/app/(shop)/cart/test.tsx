@@ -161,9 +161,6 @@ export const metadata: Metadata = {
 
 
 
-
-
-
 // import Link from "next/link";
 // import { ShoppingCart } from "lucide-react";
 
