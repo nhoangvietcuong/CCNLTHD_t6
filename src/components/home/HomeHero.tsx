@@ -109,8 +109,8 @@ export function HomeHero({ categories }: HomeHeroProps) {
         </div>
 
         {/* CỘT GIỮA: Main Banner Carousel (Col 6 / 12 on desktop, Col 9 if no right) */}
-        <div className="lg:col-span-6 flex flex-col">
-          <div className="relative h-64 sm:h-80 lg:h-full w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-xs group">
+        <div className="min-w-0 lg:col-span-6 flex flex-col">
+          <div className="relative aspect-[858/450] lg:aspect-auto lg:h-full w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100 shadow-xs group">
             {DEFAULT_MAIN_BANNERS.map((banner, index) => (
               <div
                 key={index}
@@ -122,7 +122,7 @@ export function HomeHero({ categories }: HomeHeroProps) {
                   <img
                     src={banner.imageUrl}
                     alt={banner.title}
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-contain"
                   />
                 </Link>
               </div>
@@ -198,10 +198,10 @@ export function HomeHero({ categories }: HomeHeroProps) {
             <Link
               key={cat.id || cat.slug}
               href={`/products?category=${cat.id || cat.slug}`}
-              className="flex items-center gap-2 rounded-md bg-gray-50 p-2 text-gray-700 hover:bg-red-50 hover:text-[#c92127] transition"
+              className="flex min-w-0 items-center gap-2 rounded-md bg-gray-50 p-2 text-gray-700 hover:bg-red-50 hover:text-[#c92127] transition"
             >
               <span className="text-sm">📖</span>
-              <span className="font-medium truncate">{cat.name}</span>
+              <span className="min-w-0 font-medium break-words">{cat.name}</span>
             </Link>
           ))}
         </div>

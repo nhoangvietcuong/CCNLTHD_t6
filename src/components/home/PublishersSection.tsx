@@ -69,7 +69,7 @@ export function PublishersSection() {
 
   return (
     <section className="mt-8 rounded-lg border border-gray-200 bg-white p-4 shadow-xs sm:p-5">
-      <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 pb-3 mb-4">
         <h2 className="text-base sm:text-lg font-bold uppercase tracking-wide text-gray-900">
           Nhà Xuất Bản &amp; Đối Tác Đồng Hành
         </h2>

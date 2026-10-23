@@ -26,7 +26,7 @@ export function UpcomingBooksSection({ products }: UpcomingBooksSectionProps) {
   return (
     <section className="mt-8 rounded-lg border border-gray-200 bg-white p-4 shadow-xs sm:p-5">
       {/* Title box */}
-      <div className="flex items-center justify-between border-b border-gray-200 pb-3 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-200 pb-3 mb-4">
         <div className="flex items-center gap-2">
           <div className="h-5 w-1 bg-indigo-600 rounded-full" />
           <h2 className="text-base sm:text-lg font-bold uppercase tracking-wide text-gray-900">

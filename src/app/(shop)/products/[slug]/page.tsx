@@ -61,7 +61,7 @@ export default async function ProductDetailPage({
       </nav>
 
       {/* Main detail card */}
-      <div className="rounded-xl border border-gray-200 bg-white p-6 shadow-xs">
+      <div className="rounded-xl border border-gray-200 bg-white p-4 sm:p-6 shadow-xs">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-12 lg:gap-12">
           {/* Cột trái: Ảnh bìa sách (Col 5 / 12) */}
           <div className="md:col-span-5 flex flex-col items-center">
@@ -106,7 +106,7 @@ export default async function ProductDetailPage({
           </div>
 
           {/* Cột phải: Thông tin & Thao tác (Col 7 / 12) */}
-          <div className="md:col-span-7 flex flex-col justify-between">
+          <div className="min-w-0 md:col-span-7 flex flex-col justify-between">
             <div>
               <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-gray-900">
                 {product.name}
@@ -137,17 +137,17 @@ export default async function ProductDetailPage({
 
               {/* Giá sách */}
               <div className="my-4 rounded-lg bg-red-50/50 p-4 border border-red-100">
-                <div className="flex items-baseline gap-3">
-                  <span className="text-2xl sm:text-3xl font-extrabold text-[#c92127]">
+                <div className="flex flex-wrap items-baseline gap-x-3 gap-y-2">
+                  <span className="shrink-0 whitespace-nowrap text-2xl sm:text-3xl font-extrabold text-[#c92127]">
                     {formatPrice(product.price)}
                   </span>
                   {product.originalPrice && product.originalPrice > product.price && (
-                    <span className="text-sm text-gray-400 line-through">
+                    <span className="shrink-0 whitespace-nowrap text-sm text-gray-400 line-through">
                       {formatPrice(product.originalPrice)}
                     </span>
                   )}
                   {discountPercent && discountPercent > 0 && (
-                    <span className="rounded bg-[#c92127] px-2 py-0.5 text-xs font-bold text-white">
+                    <span className="shrink-0 whitespace-nowrap rounded bg-[#c92127] px-2 py-0.5 text-xs font-bold text-white">
                       Tiết kiệm {discountPercent}%
                     </span>
                   )}

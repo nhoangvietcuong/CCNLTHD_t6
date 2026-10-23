@@ -169,7 +169,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full bg-white shadow-xs">
       {/* MIDDLE HEADER */}
       <div className="border-b border-gray-100 bg-white py-3">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-2 px-3 sm:gap-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <div className="flex shrink-0 items-center">
             <Link href="/" className="flex items-center gap-1.5 group">
@@ -190,7 +190,7 @@ export default function Header() {
                 </svg>
               </div>
               <div className="flex flex-col">
-                <span className="text-2xl font-black tracking-tight text-[#c92127]">
+                <span className="text-xl sm:text-2xl font-black tracking-tight text-[#c92127]">
                   nextBooks
                 </span>
                 <span className="text-[10px] font-bold text-gray-500 uppercase tracking-widest -mt-1">
@@ -234,7 +234,7 @@ export default function Header() {
           </form>
 
           {/* Right Header items: Hotline, User Account, Cart */}
-          <div className="flex items-center gap-4 sm:gap-6">
+          <div className="flex shrink-0 items-center gap-2 sm:gap-4 xl:gap-6">
             {/* Hotline */}
             <a
               href="tel:02873007684"
@@ -266,6 +266,7 @@ export default function Header() {
             <div className="relative">
               <button
                 type="button"
+                aria-label="Tài khoản"
                 onClick={() => setLoginModalOpen(!loginModalOpen)}
                 className="flex items-center gap-2 text-xs font-medium text-gray-700 hover:text-[#c92127] transition cursor-pointer"
               >
@@ -284,12 +285,12 @@ export default function Header() {
                     <circle cx="12" cy="7" r="4" />
                   </svg>
                 </div>
-                <span className="hidden sm:inline-block">Đăng nhập</span>
+                <span className="hidden lg:inline-block">Đăng nhập</span>
               </button>
 
               {/* Login dropdown preview */}
               {loginModalOpen && (
-                <div className="absolute right-0 top-12 z-50 w-64 rounded-lg border border-gray-200 bg-white p-4 shadow-xl animate-in fade-in slide-in-from-top-2">
+                <div className="fixed right-3 top-16 z-50 w-64 max-w-[calc(100vw-1.5rem)] lg:absolute lg:right-0 lg:top-12 rounded-lg border border-gray-200 bg-white p-4 shadow-xl animate-in fade-in slide-in-from-top-2">
                   <h4 className="text-sm font-bold text-gray-900 mb-2">
                     Tài khoản nextBooks
                   </h4>
@@ -322,6 +323,7 @@ export default function Header() {
             {/* Shopping Cart Button */}
             <Link
               href="/cart"
+              aria-label={`Giỏ hàng (${totalItems})`}
               className="flex items-center gap-2 text-xs font-semibold text-gray-800 hover:text-[#c92127] transition"
             >
               <div className="relative flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-[#c92127]">
@@ -343,15 +345,16 @@ export default function Header() {
                   {totalItems}
                 </span>
               </div>
-              <span className="hidden sm:inline-block">GIỎ HÀNG</span>
+              <span className="hidden lg:inline-block">GIỎ HÀNG</span>
             </Link>
 
             {/* Mobile menu toggle */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-700"
+              className="lg:hidden flex h-9 w-9 items-center justify-center rounded-lg border border-gray-200 text-gray-700"
               aria-label="Menu"
+              aria-expanded={mobileMenuOpen}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -407,7 +410,14 @@ export default function Header() {
           <div className="relative" ref={categoryDropdownRef}>
             <button
               type="button"
-              onClick={() => setCategoryMenuOpen(!categoryMenuOpen)}
+              onClick={() => {
+                if (window.matchMedia("(min-width: 1024px)").matches) {
+                  setCategoryMenuOpen(!categoryMenuOpen);
+                } else {
+                  setMobileMenuOpen(true);
+                }
+              }}
+              aria-expanded={categoryMenuOpen || mobileMenuOpen}
               className="flex items-center gap-2 bg-[#c92127] px-4 py-2.5 text-xs font-bold uppercase tracking-wider text-white hover:bg-[#a81a1f] transition cursor-pointer"
             >
               <svg
@@ -443,7 +453,7 @@ export default function Header() {
 
             {/* Dropdown Flyout Panel */}
             {categoryMenuOpen && (
-              <div className="absolute left-0 top-full z-50 flex w-[260px] lg:w-[680px] bg-white border border-gray-200 shadow-2xl">
+              <div className="absolute left-0 top-full z-50 hidden lg:flex w-[680px] bg-white border border-gray-200 shadow-2xl">
                 {/* Main category column */}
                 <div className="w-[260px] border-r border-gray-200 py-1 max-h-[460px] overflow-y-auto">
                   {CATEGORIES_LIST.map((cat, idx) => (
@@ -596,7 +606,7 @@ export default function Header() {
           </nav>
 
           {/* Right spotlight button */}
-          <div className="hidden sm:flex items-center">
+          <div className="hidden xl:flex items-center">
             <Link
               href="/products"
               className="flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 hover:bg-emerald-100 transition"

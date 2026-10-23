@@ -26,7 +26,7 @@ export function HotPromotionSection({ products }: HotPromotionSectionProps) {
   return (
     <section className="mt-8 rounded-lg border border-red-200/80 bg-gradient-to-r from-red-50/40 via-white to-red-50/40 p-4 shadow-xs sm:p-5">
       {/* Header bar */}
-      <div className="flex items-center justify-between border-b border-red-200 pb-3 mb-4">
+      <div className="flex flex-wrap items-center justify-between gap-3 border-b border-red-200 pb-3 mb-4">
         <div className="flex items-center gap-2">
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#c92127] text-white text-base shadow-xs animate-pulse">
             🔥

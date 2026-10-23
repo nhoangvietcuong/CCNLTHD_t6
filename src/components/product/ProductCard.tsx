@@ -87,14 +87,14 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         {/* Price Area */}
         <div className="mt-2">
           <div className="flex items-baseline gap-1.5">
-            <span className="text-sm font-bold text-[#c92127] sm:text-base">
+            <span className="whitespace-nowrap text-sm font-bold text-[#c92127] sm:text-base">
               {formatPrice(product.price)}
             </span>
           </div>
 
           {product.originalPrice && product.originalPrice > product.price ? (
-            <div className="flex items-center gap-1.5 text-[11px]">
-              <span className="text-gray-400 line-through">
+            <div className="flex flex-wrap items-center gap-1.5 text-[11px]">
+              <span className="whitespace-nowrap text-gray-400 line-through">
                 {formatPrice(product.originalPrice)}
               </span>
               {discountPercent && discountPercent > 0 && (
