@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { useCartStore } from "@/store/useCartStore";
+import { useCartStore } from "@/store/useCartStore"; //sd zutand
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { formatPrice } from "@/lib/utils";
 import { CartItem } from "@/types";
