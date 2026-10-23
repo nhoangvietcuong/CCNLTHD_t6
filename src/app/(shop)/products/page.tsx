@@ -9,12 +9,26 @@ export const metadata: Metadata = {
   description: "Tuyển chọn hơn 20.000 tựa sách hay với mức giá tốt nhất tại nextBooks.vn",
 };
 
+type QueryValue = string | string[] | undefined;
+
 interface ProductsPageProps {
-  searchParams: Promise<{ category?: string; search?: string; filter?: string }>;
+  searchParams: Promise<{
+    category?: QueryValue;
+    search?: QueryValue;
+    filter?: QueryValue;
+  }>;
+}
+
+function firstQueryValue(value: QueryValue): string | undefined {
+  // Repeated query parameters use the first value, including an empty string.
+  return Array.isArray(value) ? value[0] : value;
 }
 
 export default async function ProductsPage({ searchParams }: ProductsPageProps) {
-  const { category: selectedCategory, search: searchQuery, filter } = await searchParams;
+  const queryParams = await searchParams;
+  const selectedCategory = firstQueryValue(queryParams.category);
+  const searchQuery = firstQueryValue(queryParams.search);
+  const filter = firstQueryValue(queryParams.filter);
 
   const [categories, allProducts] = await Promise.all([
     getCategories(),
