@@ -6,141 +6,19 @@ import { useRouter } from "next/navigation";
 import { useCartStore } from "@/store/useCartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import AccountMenu from "@/components/auth/AccountMenu";
+import type { Category } from "@/types";
+import { categoryHref, getCategoryChildren, validMenuCategory } from "@/lib/category-menu";
 
-const CATEGORIES_LIST = [
-  {
-    name: "Sách Kinh Tế - Kỹ Năng",
-    slug: "sach-kinh-te",
-    subcategories: [
-      "Kinh Tế - Chính Trị",
-      "Nhân Vật - Bài Học Kinh Doanh",
-      "Khởi Nghiệp",
-      "Quản Trị - Lãnh Đạo",
-      "Tài Chính, Kế Toán",
-      "Kinh Tế Học",
-      "Quản Trị Nhân Sự",
-      "Chứng Khoán - Bất Động Sản - Đầu Tư",
-      "Kỹ Năng Làm Việc",
-      "Marketing - Bán Hàng"
-    ]
-  },
-  {
-    name: "Sách Nghệ Thuật Sống - Tâm Lý",
-    slug: "sach-nghe-thuat-song-tam-ly",
-    subcategories: [
-      "Nghệ Thuật Sống",
-      "Tâm Lý",
-      "Tư Duy",
-      "Hướng Nghiệp"
-    ]
-  },
-  {
-    name: "Sách Văn Học Việt Nam",
-    slug: "sach-van-hoc-viet-nam",
-    subcategories: [
-      "Truyện ngắn - Tản văn",
-      "Tiểu thuyết",
-      "Tiểu thuyết lịch sử",
-      "Tiểu sử - Hồi ký",
-      "Phóng sự - Ký sự - Tùy bút",
-      "Phê bình văn học",
-      "Thơ"
-    ]
-  },
-  {
-    name: "Sách Văn học nước ngoài",
-    slug: "sach-van-hoc-nuoc-ngoai",
-    subcategories: [
-      "Văn học hiện đại",
-      "Văn học kinh điển",
-      "Tiểu thuyết nước ngoài",
-      "Giả tưởng - Kinh dị",
-      "Truyện trinh thám",
-      "Truyện kiếm hiệp",
-      "Thần thoại - Cổ tích"
-    ]
-  },
-  {
-    name: "Sách Thiếu Nhi",
-    slug: "sach-thieu-nhi",
-    subcategories: [
-      "Mẫu Giáo",
-      "Nhi Đồng",
-      "Thiếu Niên",
-      "Văn Học Thiếu Nhi",
-      "Kiến Thức - Bách Khoa",
-      "Kỹ Năng Sống",
-      "Truyện Cổ Tích",
-      "Truyện Tranh",
-      "Kiến Thức - Kỹ Năng Cho Trẻ"
-    ]
-  },
-  {
-    name: "Sách Giáo Dục - Gia Đình",
-    slug: "sach-giao-duc-gia-dinh",
-    subcategories: [
-      "Giáo Dục",
-      "Giới Tính",
-      "Thai giáo",
-      "Làm Cha Mẹ",
-      "Dinh Dưỡng - Chăm Sóc Trẻ",
-      "Ẩm Thực - Nấu Ăn",
-      "Tiếng Anh",
-      "Tham Khảo",
-      "Ngoại Ngữ Khác"
-    ]
-  },
-  {
-    name: "Sách Lịch Sử",
-    slug: "sach-lich-su",
-    subcategories: ["Lịch Sử Việt Nam", "Lịch Sử Thế Giới"]
-  },
-  {
-    name: "Sách Văn Hóa - Nghệ Thuật",
-    slug: "sach-van-hoa-nghe-thuat",
-    subcategories: [
-      "Văn Hóa",
-      "Nghệ Thuật",
-      "Phong Tục - Tập Quán",
-      "Kiến Trúc",
-      "Phong Thủy - Chiêm Tinh",
-      "Du Lịch"
-    ]
-  },
-  {
-    name: "Sách Khoa Học - Triết Học",
-    slug: "sach-khoa-hoc-triet-hoc",
-    subcategories: [
-      "Triết Học Phương Tây",
-      "Minh Triết Phương Đông",
-      "Khoa Học - Công Nghệ"
-    ]
-  },
-  {
-    name: "Sách Tâm Linh - Tôn Giáo",
-    slug: "sach-tam-linh-ton-giao",
-    subcategories: ["Phật Giáo", "Thiền Định", "Tôn Giáo Khác"]
-  },
-  {
-    name: "Sách Y Học - Thực Dưỡng",
-    slug: "sach-y-hoc-thuc-dung",
-    subcategories: [
-      "Chăm Sóc Sức Khỏe",
-      "Thực Dưỡng",
-      "Y Học",
-      "Đông Y - Cổ Truyền",
-      "Thiền - Yoga"
-    ]
-  }
-];
-
-export default function Header() {
+export default function Header({ categories }: { categories: Category[] }) {
   const router = useRouter();
   const totalItems = useHydratedStore(useCartStore, (s) => s.getTotalItems()) ?? 0;
   const [searchTerm, setSearchTerm] = useState("");
   const [categoryMenuOpen, setCategoryMenuOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeCategoryIndex, setActiveCategoryIndex] = useState<number | null>(null);
+  const menuCategories = categories.filter(validMenuCategory);
+  const activeCategory = activeCategoryIndex === null ? undefined : menuCategories[activeCategoryIndex];
+  const activeChildren = activeCategory ? getCategoryChildren(activeCategory, menuCategories) : [];
 
   const categoryDropdownRef = useRef<HTMLDivElement>(null);
 
@@ -235,32 +113,6 @@ export default function Header() {
 
           {/* Right Header items: Hotline, User Account, Cart */}
           <div className="flex shrink-0 items-center gap-2 sm:gap-4 xl:gap-6">
-            {/* Hotline */}
-            <a
-              href="tel:02873007684"
-              className="hidden xl:flex items-center gap-2 text-left group"
-            >
-              <div className="flex h-9 w-9 items-center justify-center rounded-full bg-red-50 text-[#c92127] group-hover:bg-[#c92127] group-hover:text-white transition">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
-                >
-                  <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
-                </svg>
-              </div>
-              <div className="text-xs">
-                <div className="text-gray-500">Gọi đặt hàng</div>
-                <div className="font-bold text-gray-900 group-hover:text-[#c92127]">
-                  028 7300 7684
-                </div>
-              </div>
-            </a>
 
             {/* Tài khoản đăng nhập / đăng ký */}
             <AccountMenu />
@@ -397,54 +249,55 @@ export default function Header() {
 
             {/* Dropdown Flyout Panel */}
             {categoryMenuOpen && (
-              <div className="absolute left-0 top-full z-50 hidden lg:flex w-[680px] bg-white border border-gray-200 shadow-2xl">
+              <div className={`absolute left-0 top-full z-50 hidden lg:flex ${activeChildren.length ? "w-[680px]" : "w-[260px]"} bg-white border border-gray-200 shadow-2xl`}>
                 {/* Main category column */}
                 <div className="w-[260px] border-r border-gray-200 py-1 max-h-[460px] overflow-y-auto">
-                  {CATEGORIES_LIST.map((cat, idx) => (
+                  {menuCategories.map((cat, idx) => (
                     <div
-                      key={cat.slug}
+                      key={cat.id}
                       onMouseEnter={() => setActiveCategoryIndex(idx)}
+                      onFocus={() => setActiveCategoryIndex(idx)}
                       className={`flex items-center justify-between px-3.5 py-2 text-xs font-medium cursor-pointer transition ${activeCategoryIndex === idx
                           ? "bg-red-50 text-[#c92127] font-semibold"
                           : "text-gray-700 hover:bg-gray-50 hover:text-[#c92127]"
                         }`}
                     >
                       <Link
-                        href={`/products?category=${cat.slug}`}
+                        href={categoryHref(cat)}
                         onClick={() => setCategoryMenuOpen(false)}
                         className="flex-1 truncate"
                       >
                         {cat.name}
                       </Link>
-                      <span className="text-[10px] text-gray-400">&rsaquo;</span>
+                      {getCategoryChildren(cat, menuCategories).length > 0 && (
+                        <span aria-hidden="true" className="text-[10px] text-gray-400">&rsaquo;</span>
+                      )}
                     </div>
                   ))}
                 </div>
 
                 {/* Subcategories Flyout (Desktop only) */}
-                <div className="hidden lg:block flex-1 p-5 bg-white max-h-[460px] overflow-y-auto">
-                  {activeCategoryIndex !== null && CATEGORIES_LIST[activeCategoryIndex] && (
+                {activeCategory && activeChildren.length > 0 && <div className="hidden lg:block flex-1 p-5 bg-white max-h-[460px] overflow-y-auto">
                     <div>
                       <h4 className="text-sm font-bold text-[#c92127] border-b border-gray-100 pb-2 mb-3">
-                        {CATEGORIES_LIST[activeCategoryIndex].name}
+                        {activeCategory.name}
                       </h4>
                       <div className="grid grid-cols-2 gap-2 text-xs">
-                        {CATEGORIES_LIST[activeCategoryIndex].subcategories.map(
+                        {activeChildren.map(
                           (sub) => (
                             <Link
-                              key={sub}
-                              href={`/products?category=${CATEGORIES_LIST[activeCategoryIndex].slug}`}
+                              key={sub.id}
+                              href={categoryHref(sub)}
                               onClick={() => setCategoryMenuOpen(false)}
                               className="text-gray-600 hover:text-[#c92127] hover:underline py-1"
                             >
-                              {sub}
+                              {sub.name}
                             </Link>
                           )
                         )}
                       </div>
                     </div>
-                  )}
-                </div>
+                </div>}
               </div>
             )}
           </div>
@@ -588,15 +441,24 @@ export default function Header() {
 
             {/* Drawer Category List */}
             <div className="flex-1 overflow-y-auto px-2 py-3 divide-y divide-gray-100 text-xs">
-              {CATEGORIES_LIST.map((cat) => (
-                <div key={cat.slug} className="py-2 px-2">
+              {menuCategories.map((cat) => (
+                <div key={cat.id} className="py-2 px-2">
                   <Link
-                    href={`/products?category=${cat.slug}`}
+                    href={categoryHref(cat)}
                     onClick={() => setMobileMenuOpen(false)}
                     className="font-medium text-gray-800 hover:text-[#c92127] block"
                   >
                     {cat.name}
                   </Link>
+                  {getCategoryChildren(cat, menuCategories).length > 0 && (
+                    <details className="mt-1">
+                      <summary className="cursor-pointer text-gray-600">Danh mục con</summary>
+                      {getCategoryChildren(cat, menuCategories).map((child) => (
+                        <Link key={child.id} href={categoryHref(child)} onClick={() => setMobileMenuOpen(false)}
+                          className="block py-1 pl-3 text-gray-600 hover:text-[#c92127]">{child.name}</Link>
+                      ))}
+                    </details>
+                  )}
                 </div>
               ))}
               <div className="pt-4 px-2 space-y-2 text-gray-600 font-medium">

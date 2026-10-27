@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/useCartStore";
+import { BookCover } from "@/components/product/BookCover";
 
 interface ProductCardProps {
   product: Product;
@@ -14,7 +15,6 @@ interface ProductCardProps {
 export function ProductCard({ product, className = "" }: ProductCardProps) {
   const addToCart = useCartStore((state) => state.addToCart);
   const [added, setAdded] = React.useState(false);
-  const [imgError, setImgError] = React.useState(false);
 
   const discountPercent =
     product.discount ||
@@ -25,7 +25,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (product.stock <= 0 && product.badge) return;
+    if (product.stock <= 0) return;
 
     addToCart(product, 1);
     setAdded(true);
@@ -39,22 +39,7 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
       <Link href={`/products/${product.slug}`} className="block">
         {/* Book Cover Image Area */}
         <div className="relative mb-2.5 flex h-48 w-full items-center justify-center overflow-hidden rounded bg-gray-50 sm:h-52">
-          {product.imageUrl && !imgError && product.imageUrl !== "/placeholder.svg" ? (
-            <img
-              src={product.imageUrl}
-              alt={product.name}
-              loading="lazy"
-              onError={() => setImgError(true)}
-              className="h-full w-full object-contain p-1 transition-transform duration-300 group-hover:scale-105"
-            />
-          ) : (
-            <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-red-50 to-orange-50 p-4 text-center">
-              <span className="text-2xl mb-1">📖</span>
-              <span className="text-xs font-semibold text-gray-700 line-clamp-3">
-                {product.name}
-              </span>
-            </div>
-          )}
+          <BookCover imageUrl={product.imageUrl} slug={product.slug} name={product.name} />
 
           {/* Badge: Sắp phát hành / Đặt trước */}
           {product.badge && (
@@ -128,11 +113,11 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
         <button
           type="button"
           onClick={handleQuickAdd}
-          disabled={product.stock <= 0 && Boolean(product.badge)}
+          disabled={product.stock <= 0}
           className={`w-full rounded py-1.5 text-xs font-medium transition cursor-pointer flex items-center justify-center gap-1 ${
             added
               ? "bg-green-600 text-white"
-              : product.stock <= 0 && product.badge
+              : product.stock <= 0
               ? "bg-amber-100 text-amber-800"
               : "border border-[#c92127] text-[#c92127] hover:bg-[#c92127] hover:text-white"
           }`}
@@ -141,9 +126,9 @@ export function ProductCard({ product, className = "" }: ProductCardProps) {
             <>
               <span>✓</span> Đã thêm giỏ hàng
             </>
-          ) : product.stock <= 0 && product.badge ? (
+          ) : product.stock <= 0 ? (
             <>
-              <span>⏰</span> {product.badge}
+              <span>⏰</span> {product.badge || 'Tạm hết hàng'}
             </>
           ) : (
             <>

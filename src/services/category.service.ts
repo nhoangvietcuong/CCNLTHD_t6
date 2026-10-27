@@ -8,15 +8,18 @@ import { Category } from "@/types";
 export async function getCategories(): Promise<Category[]> {
   const querySnapshot = await getDocs(collection(db, "categories"));
   
-  return querySnapshot.docs.map((doc) => {
+  return querySnapshot.docs.flatMap((doc) => {
     const data = doc.data();
-    return {
+    if (typeof data.name !== "string" || !data.name.trim() || !doc.id.trim() || doc.id.includes("/")) return [];
+    return [{
       id: doc.id,
-      name: data.name ?? "",
-      slug: data.slug ?? "",
+      name: data.name.trim(),
+      slug: typeof data.slug === "string" ? data.slug.trim() : "",
       description: data.description,
       itemCount: data.itemCount,
-      subcategories: data.subcategories || [],
-    };
+      subcategories: Array.isArray(data.subcategories)
+        ? [...new Set(data.subcategories.filter((value: unknown): value is string => typeof value === "string" && !!value.trim()).map((value: string) => value.trim()))]
+        : [],
+    }];
   });
 }

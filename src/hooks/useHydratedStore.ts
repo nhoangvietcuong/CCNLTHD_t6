@@ -1,6 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
+
+const subscribe = () => () => {};
+const clientSnapshot = () => true;
+const serverSnapshot = () => false;
 
 export function useHydratedStore<T, U>(
   useStore: {
@@ -10,11 +14,7 @@ export function useHydratedStore<T, U>(
   selector: (state: T) => U
 ): U | undefined {
   const result = useStore(selector);
-  const [isHydrated, setIsHydrated] = useState(false);
-
-  useEffect(() => {
-    setIsHydrated(true);
-  }, []);
+  const isHydrated = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
 
   return isHydrated ? result : undefined;
 }

@@ -16,6 +16,13 @@ export interface Product {
   slug: string;
   price: number;
   imageUrl: string;
+  coverMetadata?: {
+    isbn: string;
+    edition: string;
+    source: string;
+    sourceUrl: string;
+    verifiedAt: string;
+  };
   categoryId: string;
   description: string;
   stock: number;
@@ -54,6 +61,9 @@ export type OrderStatus = "pending" | "confirmed" | "shipping" | "delivered" | "
 
 // 6. Order Schema: orders/{orderId}
 export interface Order {
+  ownerId: string | null;
+  paymentMethod: "cod";
+  paymentStatus: "unpaid";
   id?: string;
   customerName: string;
   phone: string;

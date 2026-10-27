@@ -1,6 +1,13 @@
 import { db } from "@/lib/firebase/config";
 import { collection, getDocs, query, where, limit } from "firebase/firestore";
 import { Product } from "@/types";
+import coverMap from "../../data/book-cover-map.json";
+import replacements from "../../data/book-replacements.json";
+
+function verifiedCover(id: string, name: unknown, author: unknown) {
+  return [...coverMap.books, ...replacements.books].find((book) => book.productId === id && book.title === name &&
+    book.author === author && book.verificationStatus === "verified" && book.imageUrl);
+}
 
 function mapDocToProduct(docId: string, data: Record<string, unknown>): Product {
   return {
@@ -8,7 +15,9 @@ function mapDocToProduct(docId: string, data: Record<string, unknown>): Product 
     name: (data.name as string) ?? "",
     slug: (data.slug as string) ?? "",
     price: Number(data.price) || 0,
-    imageUrl: (data.imageUrl as string) ?? "/placeholder.svg",
+    imageUrl: verifiedCover(docId, data.name, data.author)?.imageUrl ||
+      (typeof data.imageUrl === "string" ? data.imageUrl.trim() : "/placeholder.svg"),
+    coverMetadata: mapCoverMetadata(data.coverMetadata),
     categoryId: (data.categoryId as string) ?? "",
     description: (data.description as string) ?? "",
     stock: Number(data.stock) || 0,
@@ -23,6 +32,15 @@ function mapDocToProduct(docId: string, data: Record<string, unknown>): Product 
     isUpcoming: Boolean(data.isUpcoming),
     badge: (data.badge as string) ?? "",
   };
+}
+
+function mapCoverMetadata(value: unknown): Product["coverMetadata"] {
+  if (!value || typeof value !== "object") return undefined;
+  const data = value as Record<string, unknown>;
+  if (["isbn", "edition", "source", "sourceUrl", "verifiedAt"].some((key) => typeof data[key] !== "string")) return undefined;
+  if (!/^https:\/\//.test(data.sourceUrl as string)) return undefined;
+  return { isbn: data.isbn as string, edition: data.edition as string, source: data.source as string,
+    sourceUrl: data.sourceUrl as string, verifiedAt: data.verifiedAt as string };
 }
 
 /**
@@ -62,8 +80,11 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
  */
 export async function getHotProducts(max = 10): Promise<Product[]> {
   const products = await getProducts();
-  const hot = products.filter((p) => p.isHot);
-  return hot.length >= 4 ? hot.slice(0, max) : products.slice(0, max);
+  // Use existing books with verified covers, retaining their actual prices and identity.
+  return products.filter((p) => verifiedCover(p.id, p.name, p.author) && p.stock > 0 &&
+    (p.isHot || (p.originalPrice && p.originalPrice > p.price)))
+    .sort((a, b) => Number(b.isHot) - Number(a.isHot))
+    .slice(0, max);
 }
 
 /**

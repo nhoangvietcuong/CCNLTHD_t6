@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+export const dynamic = 'force-dynamic';
 import Link from "next/link";
 import { getCategories } from "@/services/category.service";
 import { getProducts } from "@/services/product.service";

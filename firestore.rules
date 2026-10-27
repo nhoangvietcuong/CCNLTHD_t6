@@ -1,0 +1,23 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /products/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    match /categories/{id} {
+      allow read: if true;
+      allow write: if false;
+    }
+    // Orders include contact information. Even authenticated client SDK users
+    // must use the server capability endpoint; browser mock sessions confer no rights.
+    match /orders/{id} {
+      allow read, write: if false;
+    }
+    // Includes all unknown collections and subcollections. Parent catalog read
+    // permissions do not make nested documents public.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

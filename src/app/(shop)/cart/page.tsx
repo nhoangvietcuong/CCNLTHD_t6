@@ -52,6 +52,7 @@ export default function CartPage() {
           </div>
 
           <div className="mt-8 flex justify-center gap-4">
+            <Link href={`/orders/${placedOrderId}`} className="text-sm font-semibold underline">Xem chi tiết đơn hàng</Link>
             <Link
               href="/products"
               className="rounded-lg bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-xs hover:bg-slate-800 transition-colors"

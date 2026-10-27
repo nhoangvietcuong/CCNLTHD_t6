@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useCartStore } from "@/store/useCartStore";
 import { useHydratedStore } from "@/hooks/useHydratedStore";
 import { formatPrice } from "@/lib/utils";
@@ -19,6 +19,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const submitting = useRef(false);
 
   if (!items || items.length === 0) {
     return null;
@@ -28,11 +29,11 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
   const validateForm = () => {
     const newErrors: { [key: string]: string } = {};
 
-    if (!customerName.trim()) {
-      newErrors.customerName = "Vui lòng nhập họ và tên";
+    if (customerName.trim().length < 2 || customerName.trim().length > 120) {
+      newErrors.customerName = "Họ và tên cần từ 2 đến 120 ký tự";
     }
 
-    const phoneRegex = /(84|0[3|5|7|8|9])+([0-9]{8})\b/;
+    const phoneRegex = /^(?:0|\+?84)[35789]\d{8}$/;
     if (!phone.trim()) {
       newErrors.phone = "Vui lòng nhập số điện thoại";
     } else if (!phoneRegex.test(phone.trim())) {
@@ -41,8 +42,8 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
 
     if (!address.trim()) {
       newErrors.address = "Vui lòng nhập địa chỉ nhận sách";
-    } else if (address.trim().length < 5) {
-      newErrors.address = "Địa chỉ nhận sách cần chi tiết hơn";
+    } else if (address.trim().length < 5 || address.trim().length > 500) {
+      newErrors.address = "Địa chỉ nhận sách cần từ 5 đến 500 ký tự";
     }
 
     setErrors(newErrors);
@@ -51,6 +52,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (submitting.current) return;
     setServerError(null);
 
     if (!validateForm()) {
@@ -58,6 +60,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
     }
 
     setIsLoading(true);
+    submitting.current = true;
 
     try {
       // Chuẩn bị payload gửi lên API ở Phase 7
@@ -72,10 +75,18 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
         })),
       };
 
+      // Persist before sending so a lost response/reload can retry the same intent.
+      const serialized = JSON.stringify(payload);
+      let previous: unknown = null;
+      try { previous = JSON.parse(sessionStorage.getItem('nextbooks_order_intent') ?? 'null'); } catch { /* Replace corrupted intent. */ }
+      const prior = previous && typeof previous === 'object' ? previous as Record<string, unknown> : null;
+      const key = prior?.payload === serialized && typeof prior.key === 'string' && /^[a-f0-9]{64}$/.test(prior.key)
+        ? prior.key : Array.from(crypto.getRandomValues(new Uint8Array(32)), (n) => n.toString(16).padStart(2, '0')).join('');
+      sessionStorage.setItem('nextbooks_order_intent', JSON.stringify({ payload: serialized, key }));
       const response = await fetch("/api/orders", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload),
+        headers: { "Content-Type": "application/json", "Idempotency-Key": key },
+        body: serialized,
       });
 
       const data = await response.json();
@@ -83,6 +94,11 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
       if (!response.ok) {
         throw new Error(data.message || "Đặt hàng không thành công");
       }
+      if (typeof data.orderId !== 'string' || typeof data.totalAmount !== 'number') {
+        throw new Error('Phản hồi đặt hàng không hợp lệ. Vui lòng thử lại.');
+      }
+      sessionStorage.setItem(`nextbooks_order_${data.orderId}`, key);
+      sessionStorage.removeItem('nextbooks_order_intent');
 
       if (onSuccess) {
         onSuccess(data.orderId);
@@ -91,6 +107,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
       const errMessage = error instanceof Error ? error.message : "Đã có lỗi xảy ra";
       setServerError(errMessage);
     } finally {
+      submitting.current = false;
       setIsLoading(false);
     }
   };
@@ -108,6 +125,7 @@ export function CheckoutForm({ onSuccess }: CheckoutFormProps) {
       )}
 
       <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+        <p className="text-sm text-slate-600">Thanh toán khi nhận hàng (COD). Giá và tồn kho được xác nhận khi tạo đơn.</p>
         {/* Họ tên */}
         <div>
           <label htmlFor="customerName" className="block text-xs font-semibold text-slate-700 uppercase">

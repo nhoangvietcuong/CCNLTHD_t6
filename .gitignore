@@ -29,6 +29,14 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+/firebase-debug.log*
+/firestore-debug.log*
+/ui-debug.log*
+/artifacts/seed-books-preview.png
+/artifacts/cover-*.jpg
+/artifacts/verified-cover-contact-sheet.png
+/artifacts/research-*.mjs
+/artifacts/check-book-cover-images.mjs
 
 # env files (can opt-in for committing if needed)
 .env*
@@ -41,4 +49,7 @@ yarn-error.log*
 next-env.d.ts
 
 serviceAccountKey.json.json
-*.json
+*serviceAccount*.json
+*service-account*.json
+!/.env.example
+!/.env.cloud-test.example

@@ -1,0 +1,182 @@
+{
+  "project": "nextbooks-dev",
+  "database": "(default)",
+  "checkedAt": "2026-10-26T15:54:27.727Z",
+  "products": [
+    {
+      "productId": "seed-book-atomic-habits",
+      "author": "James Clear",
+      "imageUrl": "/demo-covers/atomic-habits.svg",
+      "name": "Atomic Habits",
+      "slug": "atomic-habits"
+    },
+    {
+      "productId": "seed-book-cay-cam-ngot-cua-toi",
+      "author": "José Mauro de Vasconcelos",
+      "imageUrl": "/demo-covers/cay-cam-ngot-cua-toi.svg",
+      "name": "Cây Cam Ngọt Của Tôi",
+      "slug": "cay-cam-ngot-cua-toi"
+    },
+    {
+      "productId": "seed-book-cha-giau-cha-ngheo",
+      "author": "Robert T. Kiyosaki",
+      "imageUrl": "/demo-covers/cha-giau-cha-ngheo.svg",
+      "name": "Cha Giàu Cha Nghèo",
+      "slug": "cha-giau-cha-ngheo"
+    },
+    {
+      "productId": "seed-book-chuyen-con-meo-day-hai-au-bay",
+      "author": "Luis Sepúlveda",
+      "imageUrl": "/demo-covers/chuyen-con-meo-day-hai-au-bay.svg",
+      "name": "Chuyện Con Mèo Dạy Hải Âu Bay",
+      "slug": "chuyen-con-meo-day-hai-au-bay"
+    },
+    {
+      "productId": "seed-book-clean-code",
+      "author": "Robert C. Martin",
+      "imageUrl": "/demo-covers/clean-code.svg",
+      "name": "Clean Code",
+      "slug": "clean-code"
+    },
+    {
+      "productId": "seed-book-dac-nhan-tam",
+      "author": "Dale Carnegie",
+      "imageUrl": "/demo-covers/dac-nhan-tam.svg",
+      "name": "Đắc Nhân Tâm",
+      "slug": "dac-nhan-tam"
+    },
+    {
+      "productId": "seed-book-de-men-phieu-luu-ky",
+      "author": "Tô Hoài",
+      "imageUrl": "/demo-covers/de-men-phieu-luu-ky.svg",
+      "name": "Dế Mèn Phiêu Lưu Ký",
+      "slug": "de-men-phieu-luu-ky"
+    },
+    {
+      "productId": "seed-book-di-tim-le-song",
+      "author": "Viktor E. Frankl",
+      "imageUrl": "/demo-covers/di-tim-le-song.svg",
+      "name": "Đi Tìm Lẽ Sống",
+      "slug": "di-tim-le-song"
+    },
+    {
+      "productId": "seed-book-doraemon-tap-1",
+      "author": "Fujiko F. Fujio",
+      "imageUrl": "/demo-covers/doraemon-tap-1.svg",
+      "name": "Doraemon – Tập 1",
+      "slug": "doraemon-tap-1"
+    },
+    {
+      "productId": "seed-book-effective-typescript",
+      "author": "Dan Vanderkam",
+      "imageUrl": "/demo-covers/effective-typescript.svg",
+      "name": "Effective TypeScript",
+      "slug": "effective-typescript"
+    },
+    {
+      "productId": "seed-book-english-grammar-in-use",
+      "author": "Raymond Murphy",
+      "imageUrl": "/demo-covers/english-grammar-in-use.svg",
+      "name": "English Grammar in Use",
+      "slug": "english-grammar-in-use"
+    },
+    {
+      "productId": "seed-book-hoang-tu-be",
+      "author": "Antoine de Saint-Exupéry",
+      "imageUrl": "/demo-covers/hoang-tu-be.svg",
+      "name": "Hoàng Tử Bé",
+      "slug": "hoang-tu-be"
+    },
+    {
+      "productId": "seed-book-luoc-su-thoi-gian",
+      "author": "Stephen Hawking",
+      "imageUrl": "/demo-covers/luoc-su-thoi-gian.svg",
+      "name": "Lược Sử Thời Gian",
+      "slug": "luoc-su-thoi-gian"
+    },
+    {
+      "productId": "seed-book-mat-biec",
+      "author": "Nguyễn Nhật Ánh",
+      "imageUrl": "/demo-covers/mat-biec.svg",
+      "name": "Mắt Biếc",
+      "slug": "mat-biec"
+    },
+    {
+      "productId": "seed-book-nha-dau-tu-thong-minh",
+      "author": "Benjamin Graham",
+      "imageUrl": "/demo-covers/nha-dau-tu-thong-minh.svg",
+      "name": "Nhà Đầu Tư Thông Minh",
+      "slug": "nha-dau-tu-thong-minh"
+    },
+    {
+      "productId": "seed-book-nha-gia-kim",
+      "author": "Paulo Coelho",
+      "imageUrl": "/demo-covers/nha-gia-kim.svg",
+      "name": "Nhà Giả Kim",
+      "slug": "nha-gia-kim"
+    },
+    {
+      "productId": "seed-book-sherlock-holmes",
+      "author": "Arthur Conan Doyle",
+      "imageUrl": "/demo-covers/sherlock-holmes.svg",
+      "name": "Sherlock Holmes",
+      "slug": "sherlock-holmes"
+    },
+    {
+      "productId": "seed-book-tam-ly-hoc-ve-tien",
+      "author": "Morgan Housel",
+      "imageUrl": "/demo-covers/tam-ly-hoc-ve-tien.svg",
+      "name": "Tâm Lý Học Về Tiền",
+      "slug": "tam-ly-hoc-ve-tien"
+    },
+    {
+      "productId": "seed-book-tham-tu-lung-danh-conan-tap-1",
+      "author": "Gosho Aoyama",
+      "imageUrl": "/demo-covers/tham-tu-lung-danh-conan-tap-1.svg",
+      "name": "Thám Tử Lừng Danh Conan – Tập 1",
+      "slug": "tham-tu-lung-danh-conan-tap-1"
+    },
+    {
+      "productId": "seed-book-the-pragmatic-programmer",
+      "author": "David Thomas; Andrew Hunt",
+      "imageUrl": "/demo-covers/the-pragmatic-programmer.svg",
+      "name": "The Pragmatic Programmer",
+      "slug": "the-pragmatic-programmer"
+    },
+    {
+      "productId": "seed-book-toi-thay-hoa-vang-tren-co-xanh",
+      "author": "Nguyễn Nhật Ánh",
+      "imageUrl": "/demo-covers/toi-thay-hoa-vang-tren-co-xanh.svg",
+      "name": "Tôi Thấy Hoa Vàng Trên Cỏ Xanh",
+      "slug": "toi-thay-hoa-vang-tren-co-xanh"
+    },
+    {
+      "productId": "seed-book-toi-tu-hoc",
+      "author": "Thu Giang Nguyễn Duy Cần",
+      "imageUrl": "/demo-covers/toi-tu-hoc.svg",
+      "name": "Tôi Tự Học",
+      "slug": "toi-tu-hoc"
+    },
+    {
+      "productId": "seed-book-tu-tot-den-vi-dai",
+      "author": "Jim Collins",
+      "imageUrl": "/demo-covers/tu-tot-den-vi-dai.svg",
+      "name": "Từ Tốt Đến Vĩ Đại",
+      "slug": "tu-tot-den-vi-dai"
+    },
+    {
+      "productId": "seed-book-tuoi-tre-dang-gia-bao-nhieu",
+      "author": "Rosie Nguyễn",
+      "imageUrl": "/demo-covers/tuoi-tre-dang-gia-bao-nhieu.svg",
+      "name": "Tuổi Trẻ Đáng Giá Bao Nhiêu",
+      "slug": "tuoi-tre-dang-gia-bao-nhieu"
+    },
+    {
+      "productId": "seed-book-vu-tru",
+      "author": "Carl Sagan",
+      "imageUrl": "/demo-covers/vu-tru.svg",
+      "name": "Vũ Trụ",
+      "slug": "vu-tru"
+    }
+  ]
+}

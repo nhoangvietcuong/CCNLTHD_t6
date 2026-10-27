@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug } from "@/services/product.service";
 import { formatPrice } from "@/lib/utils";
 import { AddToCartButton } from "@/components/product/AddToCartButton";
+import { BookCover } from "@/components/product/BookCover";
 
 interface ProductDetailPageProps {
   params: Promise<{ slug: string }>;
@@ -66,20 +67,7 @@ export default async function ProductDetailPage({
           {/* Cột trái: Ảnh bìa sách (Col 5 / 12) */}
           <div className="md:col-span-5 flex flex-col items-center">
             <div className="relative flex h-80 sm:h-96 w-full items-center justify-center overflow-hidden rounded-lg border border-gray-200 bg-gray-50 p-4">
-              {product.imageUrl && product.imageUrl !== "/placeholder.svg" ? (
-                <img
-                  src={product.imageUrl}
-                  alt={product.name}
-                  className="max-h-full max-w-full object-contain drop-shadow-md"
-                />
-              ) : (
-                <div className="flex flex-col items-center justify-center text-center p-6 bg-orange-50 rounded h-full w-full">
-                  <span className="text-4xl mb-2">📖</span>
-                  <span className="text-sm font-semibold text-gray-700">
-                    {product.name}
-                  </span>
-                </div>
-              )}
+              <BookCover imageUrl={product.imageUrl} slug={product.slug} name={product.name} eager />
 
               {discountPercent && discountPercent > 0 && (
                 <span className="absolute top-3 right-3 rounded bg-[#c92127] px-2 py-1 text-xs font-bold text-white shadow-xs">
@@ -87,6 +75,15 @@ export default async function ProductDetailPage({
                 </span>
               )}
             </div>
+
+            {product.coverMetadata && (
+              <p className="mt-2 text-xs text-gray-500">
+                Ảnh ấn bản: {product.coverMetadata.edition}.{" "}
+                <a href={product.coverMetadata.sourceUrl} target="_blank" rel="noopener noreferrer" className="underline">
+                  Nguồn: {product.coverMetadata.source}
+                </a>
+              </p>
+            )}
 
             {/* Dịch vụ đi kèm */}
             <div className="mt-4 w-full rounded-lg bg-gray-50 p-3 text-xs text-gray-600 space-y-1.5 border border-gray-100">
@@ -165,7 +162,7 @@ export default async function ProductDetailPage({
                   </span>
                 ) : product.badge ? (
                   <span className="font-medium text-amber-700">
-                    ⏰ {product.badge} - Quý khách có thể đặt hàng trước
+                    ⏰ {product.badge} - Chưa mở đặt hàng
                   </span>
                 ) : (
                   <span className="font-medium text-red-600">

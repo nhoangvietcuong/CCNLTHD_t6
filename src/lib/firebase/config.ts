@@ -1,5 +1,5 @@
-import { initializeApp, getApps, getApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { initializeApp, getApps } from "firebase/app";
+import { connectFirestoreEmulator, getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
 const firebaseConfig = {
@@ -11,11 +11,19 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-// Tránh khởi tạo lại Firebase App khi Next.js Hot Reload (Fast Refresh)
-const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+const useEmulator = process.env.NEXT_PUBLIC_USE_FIREBASE_EMULATOR === 'true';
+if (useEmulator && (process.env.NODE_ENV === 'production' || !firebaseConfig.projectId?.startsWith('demo-'))) {
+  throw new Error('UNSAFE_EMULATOR_CONFIGURATION');
+}
+// Separate app names keep local test configuration isolated during Fast Refresh.
+const appName = useEmulator ? 'nextbooks-catalog-emulator' : '[DEFAULT]';
+const existingApp = getApps().find((entry) => entry.name === appName);
+const app = existingApp ?? initializeApp(firebaseConfig, appName);
 
 // Khởi tạo Firestore Database
 const db = getFirestore(app);
+
+if (useEmulator && !existingApp) connectFirestoreEmulator(db, '127.0.0.1', 8080);
 
 // Khởi tạo Firebase Storage (lưu trữ ảnh)
 const storage = getStorage(app);

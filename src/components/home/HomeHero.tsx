@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Category } from "@/types";
+import { categoryHref, getCategoryChildren, validMenuCategory } from "@/lib/category-menu";
 
 interface HomeHeroProps {
   categories: Category[];
@@ -28,13 +29,13 @@ const RIGHT_BANNERS = [
     link: "/products"
   },
   {
-    title: "Mấy Độ Cầu Vồng - Kawabata Yasunari",
-    imageUrl: "https://www.netabooks.vn/Data/Sites/1/Banner/1may-do-cau-vong-kawabata-yasunari-355x185.jpg",
+    title: "Chiến Dịch Diệt Chuột Ở Hà Nội",
+    imageUrl: "/home-banners/hanoi-books.jpg",
     link: "/products"
   },
   {
-    title: "Đạo Đức AI - Nguyên Tắc Và Thực Hành - Đào Trung Thành",
-    imageUrl: "https://www.netabooks.vn/Data/Sites/1/Banner/dao-duc-ai-nguyen-tac-va-thuc-hanh-dao-trung-thanh-355x185.jpg",
+    title: "Catherine Đại Đế - Thời Đại Vàng Son Của Đế Quốc Nga",
+    imageUrl: "/home-banners/catherine-books.jpg",
     link: "/products"
   }
 ];
@@ -52,7 +53,7 @@ export function HomeHero({ categories }: HomeHeroProps) {
   }, []);
 
   // Use categories with subcategories or fallback
-  const displayCategories = categories.length > 0 ? categories.slice(0, 11) : [];
+  const displayCategories = categories.filter(validMenuCategory).slice(0, 11);
 
   return (
     <div className="w-full">
@@ -62,48 +63,51 @@ export function HomeHero({ categories }: HomeHeroProps) {
         <div className="hidden lg:block lg:col-span-3 relative">
           <div className="h-full rounded-lg border border-gray-200 bg-white shadow-xs">
             <div className="divide-y divide-gray-100 text-xs">
-              {displayCategories.map((cat, idx) => (
+              {displayCategories.map((cat, idx) => {
+                const children = getCategoryChildren(cat, categories);
+                return (
                 <div
-                  key={cat.id || cat.slug}
+                  key={cat.id}
                   onMouseEnter={() => setHoveredCategory(idx)}
                   onMouseLeave={() => setHoveredCategory(null)}
                   className="group relative"
                 >
                   <Link
-                    href={`/products?category=${cat.id || cat.slug}`}
+                    href={categoryHref(cat)}
+                    onFocus={() => setHoveredCategory(idx)}
                     className={`flex items-center justify-between px-3.5 py-2.5 transition ${
                       hoveredCategory === idx
                         ? "bg-red-50 text-[#c92127] font-semibold"
                         : "text-gray-700 hover:bg-gray-50 hover:text-[#c92127]"
                     }`}
                   >
-                    <span className="truncate pr-2">{cat.name}</span>
-                    <span className="text-[10px] text-gray-400 group-hover:text-[#c92127]">
+                    <span className={`truncate${children.length ? " pr-2" : ""}`}>{cat.name}</span>
+                    {children.length > 0 && <span aria-hidden="true" className="text-[10px] text-gray-400 group-hover:text-[#c92127]">
                       &rsaquo;
-                    </span>
+                    </span>}
                   </Link>
 
                   {/* Flyout Submenu on Hover */}
-                  {hoveredCategory === idx && cat.subcategories && cat.subcategories.length > 0 && (
-                    <div className="absolute left-full top-0 z-50 ml-1 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-xl">
+                  {hoveredCategory === idx && children.length > 0 && (
+                    <div className="absolute left-full top-0 z-50 w-72 rounded-lg border border-gray-200 bg-white p-4 shadow-xl">
                       <h4 className="text-xs font-bold text-[#c92127] border-b border-gray-100 pb-2 mb-2">
                         {cat.name}
                       </h4>
                       <div className="grid grid-cols-1 gap-1.5">
-                        {cat.subcategories.map((sub) => (
+                        {children.map((sub) => (
                           <Link
-                            key={sub}
-                            href={`/products?category=${cat.id || cat.slug}`}
+                            key={sub.id}
+                            href={categoryHref(sub)}
                             className="text-xs text-gray-600 hover:text-[#c92127] hover:underline py-1"
                           >
-                            {sub}
+                            {sub.name}
                           </Link>
                         ))}
                       </div>
                     </div>
                   )}
                 </div>
-              ))}
+              ); })}
             </div>
           </div>
         </div>
@@ -196,8 +200,8 @@ export function HomeHero({ categories }: HomeHeroProps) {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
           {displayCategories.slice(0, 8).map((cat) => (
             <Link
-              key={cat.id || cat.slug}
-              href={`/products?category=${cat.id || cat.slug}`}
+              key={cat.id}
+              href={categoryHref(cat)}
               className="flex min-w-0 items-center gap-2 rounded-md bg-gray-50 p-2 text-gray-700 hover:bg-red-50 hover:text-[#c92127] transition"
             >
               <span className="text-sm">📖</span>

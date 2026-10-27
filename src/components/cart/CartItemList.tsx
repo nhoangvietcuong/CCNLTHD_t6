@@ -111,7 +111,7 @@ function CartItemRow({
             type="button"
             onClick={() => updateQuantity(item.productId, item.quantity + 1)}
             disabled={
-              item.product?.stock ? item.quantity >= item.product.stock : false
+              item.quantity >= (item.product?.stock ?? 999)
             }
             className="px-2.5 py-1 text-slate-500 hover:text-slate-800 text-sm disabled:opacity-40 cursor-pointer"
             aria-label="Tăng"

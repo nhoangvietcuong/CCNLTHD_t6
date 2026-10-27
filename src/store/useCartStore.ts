@@ -13,12 +13,33 @@ interface CartState {
   getSubtotal: () => number;
 }
 
+function restoreItems(persisted: unknown): CartItem[] {
+  if (!persisted || typeof persisted !== 'object' || !('items' in persisted) || !Array.isArray(persisted.items)) return [];
+  const items = new Map<string, CartItem>();
+  for (const raw of persisted.items) {
+    if (!raw || typeof raw !== 'object') continue;
+    const item = raw as Partial<CartItem>;
+    if (typeof item.productId !== 'string' || typeof item.quantity !== 'number'
+      || !Number.isSafeInteger(item.quantity) || item.quantity < 1
+      || typeof item.unitPrice !== 'number' || !Number.isFinite(item.unitPrice) || item.unitPrice < 0) continue;
+    // Product snapshots are optional, but malformed values must not reach renderers.
+    const product = item.product;
+    if (product && (typeof product !== 'object' || typeof product.stock !== 'number'
+      || !Number.isSafeInteger(product.stock) || product.stock <= 0
+      || typeof product.name !== 'string' || typeof product.imageUrl !== 'string' || typeof product.slug !== 'string')) continue;
+    const quantity = Math.min((items.get(item.productId)?.quantity ?? 0) + item.quantity, product?.stock ?? 999, 999);
+    items.set(item.productId, { productId: item.productId, quantity, unitPrice: item.unitPrice, product });
+  }
+  return [...items.values()];
+}
+
 export const useCartStore = create<CartState>()(
   persist(
     (set, get) => ({
       items: [],
 
       addToCart: (product: Product, quantity = 1) => {
+        if (!Number.isSafeInteger(quantity) || quantity < 1 || !Number.isSafeInteger(product.stock) || product.stock <= 0) return;
         set((state) => {
           const existingIndex = state.items.findIndex(
             (item) => item.productId === product.id
@@ -28,13 +49,13 @@ export const useCartStore = create<CartState>()(
             const updatedItems = [...state.items];
             const existingItem = updatedItems[existingIndex];
             const newQuantity = existingItem.quantity + quantity;
-            const finalQuantity = product.stock
-              ? Math.min(newQuantity, product.stock)
-              : newQuantity;
+            const finalQuantity = Math.min(newQuantity, product.stock, 999);
 
             updatedItems[existingIndex] = {
               ...existingItem,
               quantity: finalQuantity,
+              unitPrice: product.price,
+              product,
             };
             return { items: updatedItems };
           }
@@ -44,7 +65,7 @@ export const useCartStore = create<CartState>()(
               ...state.items,
               {
                 productId: product.id,
-                quantity: Math.min(quantity, product.stock || quantity),
+                quantity: Math.min(quantity, product.stock, 999),
                 unitPrice: product.price,
                 product,
               },
@@ -60,6 +81,7 @@ export const useCartStore = create<CartState>()(
       },
 
       updateQuantity: (productId: string, quantity: number) => {
+        if (!Number.isSafeInteger(quantity)) return;
         if (quantity <= 0) {
           get().removeFromCart(productId);
           return;
@@ -71,7 +93,7 @@ export const useCartStore = create<CartState>()(
               const maxStock = item.product?.stock ?? 999;
               return {
                 ...item,
-                quantity: Math.min(quantity, maxStock),
+                quantity: Math.min(quantity, maxStock, 999),
               };
             }
             return item;
@@ -96,6 +118,7 @@ export const useCartStore = create<CartState>()(
     }),
     {
       name: "bookstore_cart", // key lưu trong localStorage
+      merge: (persisted, current) => ({ ...current, items: restoreItems(persisted) }),
       storage: createJSONStorage(() =>
         typeof window !== "undefined"
           ? window.localStorage

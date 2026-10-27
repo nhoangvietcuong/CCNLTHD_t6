@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+export const dynamic = 'force-dynamic';
 import ShopLayout from "./(shop)/layout";
 import { getCategories } from "@/services/category.service";
 import {

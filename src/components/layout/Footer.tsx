@@ -131,20 +131,6 @@ export default function Footer() {
             <div className="space-y-2 pt-1 text-xs">
               <div className="flex items-center gap-2">
                 <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-[#c92127]">
-                  📞
-                </span>
-                <span>
-                  Gọi đặt hàng:{" "}
-                  <a
-                    href="tel:02873007684"
-                    className="font-bold text-gray-900 hover:text-[#c92127]"
-                  >
-                    028 7300 7684
-                  </a>
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-red-50 text-[#c92127]">
                   ✉️
                 </span>
                 <span>
